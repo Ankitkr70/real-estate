@@ -25,6 +25,7 @@ app.listen(3000, () => {
 //All the Routes
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/auth/google", authRouter);
 
 //middleware to handle error
 app.use((err, req, res, next) => {

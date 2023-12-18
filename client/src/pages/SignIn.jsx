@@ -3,14 +3,20 @@ import { validateEmail, validatePassword } from "../utils/validate";
 import { useState } from "react";
 import { requestOptions } from "../utils/helper";
 import { GoEye, GoEyeClosed } from "react-icons/go";
-import { FaGoogle } from "react-icons/fa";
+
+import {
+  signInStart,
+  signInFailure,
+  signInSuccess,
+} from "../redux/user/userSlice";
+import { useSelector, useDispatch } from "react-redux";
+import GoogleAuth from "../components/GoogleAuth";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({});
-  const [error, setError] = useState({});
-  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
+  const { loading, serverError } = useSelector((store) => store?.user) || {};
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const validateFormData = (formData) => {
@@ -34,29 +40,20 @@ const SignIn = () => {
     e.preventDefault();
     if (!validateFormData(formData)) return;
 
-    setLoading(true);
+    dispatch(signInStart());
     try {
       const options = requestOptions("POST", formData);
       const res = await fetch("/api/auth/signin", options);
       const data = await res.json();
       if (data.success === false) {
-        setLoading(false);
-        setError({
-          ...error,
-          serverError: data.message,
-        });
+        dispatch(signInFailure(data.message));
         return;
       }
-      setLoading(false);
-      setError({});
       setFormData({});
+      dispatch(signInSuccess(data));
       navigate("/");
-    } catch (err) {
-      setLoading(false);
-      setError({
-        ...error,
-        serverError: err.message,
-      });
+    } catch (error) {
+      dispatch(signInFailure(error.message));
     }
   };
   const handleEye = () => {
@@ -96,14 +93,7 @@ const SignIn = () => {
           value={"Sign In"}
           className="outline-none border rounded-md p-3 bg-slate-600 cursor-pointer hover:bg-slate-700 text-white"
         />
-        {/* <div className="rounded-md p-3 bg-red-700  hover:bg-red-800 text-white">
-          <FcGoogle />
-          <button className="cursor-pointer">Sign in with Google</button>
-        </div> */}
-
-        <button className="rounded-md p-3 bg-red-700  hover:bg-red-800 text-white flex items-center justify-center  ">
-          <FaGoogle className="text-md mr-2" /> Sign in with Google
-        </button>
+        <GoogleAuth />
       </form>
       <div className="text-[12px] font-bold my-5 text-slate-700">
         <span className="mr-2">Don't have an account?</span>
@@ -111,9 +101,7 @@ const SignIn = () => {
           <span className="text-blue-700 cursor-pointer">Sign Up</span>
         </Link>
       </div>
-      {error.serverError && (
-        <div className="text-red-500">{error.serverError}</div>
-      )}
+      {serverError && <div className="text-red-500">{serverError}</div>}
     </div>
   );
 };
