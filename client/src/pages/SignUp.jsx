@@ -6,11 +6,14 @@ import {
 } from "../utils/validate";
 import { useState } from "react";
 import { requestOptions } from "../utils/helper";
+import { Link } from "react-router-dom";
+import { GoEye, GoEyeClosed } from "react-icons/go";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({});
   const [error, setError] = useState({});
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const validateFormData = (formData) => {
@@ -60,6 +63,10 @@ const SignUp = () => {
       });
     }
   };
+
+  const handleEye = () => {
+    setShowPassword(!showPassword);
+  };
   return (
     <div className="max-w-lg mx-auto">
       <h1 className="text-slate-600 font-bold text-xl text-center my-5">
@@ -80,23 +87,34 @@ const SignUp = () => {
           className="outline-none border rounded-md p-3 text-slate-700"
           onChange={handleChange}
         />
-        <input
-          id="password"
-          type="password"
-          placeholder="Password"
-          className="outline-none border rounded-md p-3 text-slate-700"
-          onChange={handleChange}
-        />
+        <div className="flex items-center relative">
+          <input
+            id="password"
+            type={showPassword ? "text" : "password"}
+            placeholder="Password"
+            className="outline-none border rounded-md p-3 text-slate-700 w-full flex-grow pr-10"
+            onChange={handleChange}
+          />
+          <span
+            className="absolute right-5 text-slate-700 cursor-pointer"
+            onClick={handleEye}
+          >
+            {showPassword ? <GoEye /> : <GoEyeClosed />}
+          </span>
+        </div>
+
         <input
           disabled={loading}
           type="submit"
           value={"Sign In"}
-          className="outline-none border rounded-md p-3 bg-slate-600 cursor-pointer hover:bg-slate-700 bg-transparent text-white"
+          className="outline-none border rounded-md p-3 bg-slate-600 cursor-pointer hover:bg-slate-700 text-white"
         />
       </form>
       <div className="text-[12px] font-bold my-5 text-slate-700">
         <span className="mr-2">Have an account?</span>
-        <span className="text-blue-700 cursor-pointer">Sign In</span>
+        <Link to="/sign-in">
+          <span className="text-blue-700 cursor-pointer">Sign In</span>
+        </Link>
       </div>
       {error.serverError && (
         <div className="text-red-500">{error.serverError}</div>
