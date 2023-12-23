@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import userRouter from "./routes/user.routes.js";
 import authRouter from "./routes/auth.routes.js";
-
+import cookieParser from "cookie-parser";
 //data base connection
 dotenv.config();
 mongoose
@@ -17,7 +17,11 @@ mongoose
 
 //starting the to listed to port number 3000
 const app = express();
+
 app.use(express.json());
+
+app.use(cookieParser());
+
 app.listen(3000, () => {
   console.log("Server has been started on port 3000");
 });
