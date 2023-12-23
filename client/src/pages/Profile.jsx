@@ -7,12 +7,14 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import app from "../firebase";
+import Modal from "../components/Modal";
 const Profile = () => {
   const fileRef = useRef(null);
   const currentUser = useSelector((store) => store.user.currentUser);
   const [file, setFile] = useState(undefined);
   const [uploadPercentage, setUploadPercenge] = useState(null);
   const [fileUploadError, setFileUploadError] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({});
 
   useEffect(() => {
@@ -22,6 +24,10 @@ const Profile = () => {
   }, [file]);
 
   const handleFile = (e) => {
+    if (e.target.files[0].size > 2 * 1024 * 1024) {
+      setShowModal(true);
+      return;
+    }
     setFile(e.target.files[0]);
   };
 
@@ -77,7 +83,6 @@ const Profile = () => {
       );
     return <></>;
   };
-  console.log("asads", uploadPercentage);
   return (
     <div className="max-w-lg mx-auto">
       <h1 className="font-bold text-xl text-slate-700 text-center my-10">
@@ -87,13 +92,15 @@ const Profile = () => {
         <input
           type="file"
           hidden
+          multiple
           accept="image/*"
           ref={fileRef}
           onChange={handleFile}
+          onClick={(e) => (e.target.value = "")}
         />
         <img
           onClick={() => fileRef.current.click()}
-          src={currentUser.photo}
+          src={formData.photo || currentUser.photo}
           alt="User profile image"
           className=" cursor-pointer object-cover w-[100px] h-[100px] rounded-full self-center"
         />
@@ -131,6 +138,7 @@ const Profile = () => {
           <span className="text-red-700 text-sm font-bold">Sign Out</span>
         </div>
       </form>
+      {showModal && <Modal onClick={() => setShowModal(false)} />}
     </div>
   );
 };
