@@ -12,6 +12,9 @@ import {
   updateUserFailure,
   updateUserStart,
   updateUserSuccess,
+  deleteUserFailure,
+  deleteUserStart,
+  deleteUserSuccess,
 } from "../redux/user/userSlice";
 import { requestOptions } from "../utils/helper";
 const Profile = () => {
@@ -122,6 +125,23 @@ const Profile = () => {
       dispatch(updateUserFailure(error.message));
     }
   };
+
+  const handleDelete = async () => {
+    try {
+      dispatch(deleteUserStart());
+      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+        method: "Delete",
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(deleteUserFailure(data.message));
+        return;
+      }
+      dispatch(deleteUserSuccess());
+    } catch (error) {
+      dispatch(deleteUserFailure(error.message));
+    }
+  };
   return (
     <div className="max-w-lg mx-auto">
       <h1 className="font-bold text-xl text-slate-700 text-center my-10">
@@ -180,8 +200,15 @@ const Profile = () => {
           className="outline-none border rounded-md p-3 bg-green-700 cursor-pointer hover:bg-green-800 text-white"
         />
         <div className="flex justify-between">
-          <span className="text-red-700 text-sm font-bold">Delete Account</span>
-          <span className="text-red-700 text-sm font-bold">Sign Out</span>
+          <span
+            className="text-red-700 text-sm font-bold cursor-pointer"
+            onClick={handleDelete}
+          >
+            Delete Account
+          </span>
+          <span className="text-red-700 text-sm font-bold cursor-pointer">
+            Sign Out
+          </span>
         </div>
       </form>
       <p className="text-center my-5 font-bold text-red-700">
