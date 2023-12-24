@@ -40,6 +40,16 @@ export const signin = async (req, res, next) => {
   }
 };
 
+//Sign out
+
+export const signOut = async (req, res, next) => {
+  try {
+    res.clearCookie("access_token").status(200).json("User signed out");
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const google = async (req, res, next) => {
   const { username, email, photo } = req.body;
   try {
