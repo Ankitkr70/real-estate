@@ -173,7 +173,6 @@ const Profile = () => {
           accept="image/*"
           ref={fileRef}
           onChange={handleFile}
-          onClick={(e) => (e.target.value = "")}
         />
         <img
           onClick={() => fileRef.current.click()}
