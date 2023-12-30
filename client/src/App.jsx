@@ -11,6 +11,7 @@ import store from "./redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor } from "./redux/store";
 import PrivateRoute from "./components/PrivateRoute";
+import Lisinting from "./pages/Lisinting";
 function App() {
   return (
     <Provider store={store}>
@@ -24,6 +25,7 @@ function App() {
             <Route path="/sign-up" element={<SignUp />}></Route>
             <Route element={<PrivateRoute />}>
               <Route path="/profile" element={<Profile />}></Route>
+              <Route path="/create-listing" element={<Lisinting />}></Route>
             </Route>
           </Routes>
         </Router>

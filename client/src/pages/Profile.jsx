@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   getDownloadURL,
   getStorage,
@@ -20,11 +21,13 @@ import {
   signOutStart,
 } from "../redux/user/userSlice";
 import { requestOptions } from "../utils/helper";
+
 const Profile = () => {
   const fileRef = useRef(null);
   const { currentUser, loading, serverError } =
     useSelector((store) => store.user) || {};
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [file, setFile] = useState(undefined);
   const [uploadPercentage, setUploadPercenge] = useState(null);
   const [fileUploadError, setFileUploadError] = useState(false);
@@ -212,8 +215,9 @@ const Profile = () => {
           className="outline-none border rounded-md p-3 bg-slate-600 cursor-pointer hover:bg-slate-700 text-white"
         />
         <input
-          type="submit"
+          type="button"
           value={"CREATE LISTING"}
+          onClick={() => navigate("/create-listing")}
           className="outline-none border rounded-md p-3 bg-green-700 cursor-pointer hover:bg-green-800 text-white"
         />
         <div className="flex justify-between">
