@@ -241,7 +241,14 @@ const Profile = () => {
       <p className="text-center my-5 font-bold text-green-700">
         <code>{updateSuccess ? "User has been updated successfully" : ""}</code>
       </p>
-      {showModal && <Modal onClick={() => setShowModal(false)} />}
+      {showModal && (
+        <Modal
+          message={
+            " Only Images are allowed. File size should be less than 2 MB."
+          }
+          onClick={() => setShowModal(false)}
+        />
+      )}
     </div>
   );
 };

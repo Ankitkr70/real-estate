@@ -12,6 +12,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { persistor } from "./redux/store";
 import PrivateRoute from "./components/PrivateRoute";
 import Lisinting from "./pages/Lisinting";
+import ShowListing from "./pages/ShowListing";
 function App() {
   return (
     <Provider store={store}>
@@ -26,6 +27,7 @@ function App() {
             <Route element={<PrivateRoute />}>
               <Route path="/profile" element={<Profile />}></Route>
               <Route path="/create-listing" element={<Lisinting />}></Route>
+              <Route path="/listing/:id" element={<ShowListing />}></Route>
             </Route>
           </Routes>
         </Router>
