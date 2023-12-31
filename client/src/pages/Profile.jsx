@@ -306,8 +306,8 @@ const Profile = () => {
                   alt="property image"
                   className="w-[150px] h-[100px] object-cover rounded-md"
                 />
-                <p className="flex-1 overflow-hidden text-ellipsis self-center font-semibold">
-                  {property.name}
+                <p className="flex-1 overflow-hidden text-ellipsis self-center font-semibold hover:underline">
+                  <Link to={`/listing/${property._id}`}>{property.name}</Link>
                 </p>
               </div>
 

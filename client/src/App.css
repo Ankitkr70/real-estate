@@ -1,0 +1,7 @@
+.slick-slider {
+  overflow: hidden;
+}
+
+.slick-slider .slick-dots {
+  bottom: 15px;
+}
