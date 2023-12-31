@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   getDownloadURL,
   getStorage,
@@ -298,13 +298,19 @@ const Profile = () => {
           return (
             <div
               key={property._id}
-              className="flex justify-between p-4 border my-4"
+              className="flex justify-between p-4 border my-4 "
             >
-              <img
-                src={property.imageUrls[0]}
-                alt="property image"
-                className="w-[150px] h-[100px] object-cover rounded-md"
-              />
+              <div className="flex gap-2 flex-1 overflow-hidden">
+                <img
+                  src={property.imageUrls[0]}
+                  alt="property image"
+                  className="w-[150px] h-[100px] object-cover rounded-md"
+                />
+                <p className="flex-1 overflow-hidden text-ellipsis self-center font-semibold">
+                  {property.name}
+                </p>
+              </div>
+
               <p className="flex flex-col cursor-pointer">
                 <code
                   className="text-red-600 font-bold"
@@ -312,7 +318,9 @@ const Profile = () => {
                 >
                   Delete
                 </code>
-                <code className="text-green-600 font-bold">Edit</code>
+                <Link to={`/update-listing/${property._id}`}>
+                  <code className="text-green-600 font-bold">Edit</code>
+                </Link>
               </p>
             </div>
           );

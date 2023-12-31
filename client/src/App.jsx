@@ -13,6 +13,7 @@ import { persistor } from "./redux/store";
 import PrivateRoute from "./components/PrivateRoute";
 import Lisinting from "./pages/Lisinting";
 import ShowListing from "./pages/ShowListing";
+import EditListing from "./pages/EditListing";
 function App() {
   return (
     <Provider store={store}>
@@ -28,6 +29,10 @@ function App() {
               <Route path="/profile" element={<Profile />}></Route>
               <Route path="/create-listing" element={<Lisinting />}></Route>
               <Route path="/listing/:id" element={<ShowListing />}></Route>
+              <Route
+                path="/update-listing/:listingId"
+                element={<EditListing />}
+              ></Route>
             </Route>
           </Routes>
         </Router>
