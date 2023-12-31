@@ -296,17 +296,19 @@ const Lisinting = () => {
             />
             <span>Regular Price (per/month)</span>
           </div>
-          <div>
-            <input
-              type="number"
-              id="discountPrice"
-              required
-              onChange={handleChange}
-              value={formData.discountPrice}
-              className="mr-2 p-2 rounded-md w-16"
-            />
-            <span>Discount Price (per/month)</span>
-          </div>
+          {formData.offer && (
+            <div>
+              <input
+                type="number"
+                id="discountPrice"
+                required
+                onChange={handleChange}
+                value={formData.discountPrice}
+                className="mr-2 p-2 rounded-md w-16"
+              />
+              <span>Discount Price (per/month)</span>
+            </div>
+          )}
         </div>
         <div className="flex flex-col gap-4 flex-1">
           <p>

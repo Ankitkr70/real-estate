@@ -31,10 +31,12 @@ const Profile = () => {
   const [file, setFile] = useState(undefined);
   const [uploadPercentage, setUploadPercenge] = useState(null);
   const [fileUploadError, setFileUploadError] = useState(false);
+  const [error, setError] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({});
   const [updateSuccess, setUpdateSuccess] = useState(false);
-
+  const [showUserListing, setShowUserListing] = useState(false);
+  const [userListing, setUserListing] = useState([]);
   useEffect(() => {
     if (file) {
       uploadImage(file);
@@ -163,6 +165,44 @@ const Profile = () => {
       dispatch(signOutFailure(error.message));
     }
   };
+
+  const handleUserListing = async () => {
+    setShowUserListing(!showUserListing);
+    setError("");
+
+    if (!userListing.length) {
+      try {
+        const res = await fetch(
+          `/api/listing/user-listings/${currentUser._id}`
+        );
+        const data = await res.json();
+        if (data.success === false) {
+          setError(data.message);
+          return;
+        }
+        setUserListing(data);
+      } catch (error) {
+        setError(error.message);
+      }
+    }
+  };
+
+  const handleDeleteListing = async (id) => {
+    try {
+      const res = await fetch(`/api/listing/delete/${id}`, {
+        method: "Delete",
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        setError(data.message);
+        return;
+      }
+      const filterData = userListing.filter((property) => property._id !== id);
+      setUserListing(filterData);
+    } catch (error) {
+      setError(error.message);
+    }
+  };
   return (
     <div className="max-w-lg mx-auto">
       <h1 className="font-bold text-xl text-slate-700 text-center my-10">
@@ -238,9 +278,46 @@ const Profile = () => {
       <p className="text-center my-5 font-bold text-red-700">
         <code>{serverError ? serverError : ""}</code>
       </p>
+      <p className="text-center my-5 font-bold text-red-700">
+        <code>{error ? error : ""}</code>
+      </p>
       <p className="text-center my-5 font-bold text-green-700">
         <code>{updateSuccess ? "User has been updated successfully" : ""}</code>
       </p>
+      <div className="text-center">
+        <button
+          onClick={handleUserListing}
+          className="etxt-center outline-none border rounded-md p-3 bg-green-700 cursor-pointer hover:bg-green-800 text-white"
+        >
+          Showing Listing
+        </button>
+      </div>
+      {showUserListing &&
+        userListing.length > 0 &&
+        userListing.map((property) => {
+          return (
+            <div
+              key={property._id}
+              className="flex justify-between p-4 border my-4"
+            >
+              <img
+                src={property.imageUrls[0]}
+                alt="property image"
+                className="w-[150px] h-[100px] object-cover rounded-md"
+              />
+              <p className="flex flex-col cursor-pointer">
+                <code
+                  className="text-red-600 font-bold"
+                  onClick={() => handleDeleteListing(property._id)}
+                >
+                  Delete
+                </code>
+                <code className="text-green-600 font-bold">Edit</code>
+              </p>
+            </div>
+          );
+        })}
+
       {showModal && (
         <Modal
           message={
