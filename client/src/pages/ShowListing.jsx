@@ -9,12 +9,15 @@ import { FaBath } from "react-icons/fa6";
 import { FaParking } from "react-icons/fa";
 import { FaChair } from "react-icons/fa";
 import { FaRegShareSquare } from "react-icons/fa";
+import { useSelector } from "react-redux";
 const ShowListing = () => {
   const [listing, setListing] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const params = useParams();
   const [linkCopy, setLinkCopy] = useState(false);
+  const [contactForm, setContactForm] = useState(false);
+  const currentUser = useSelector((store) => store.user.currentUser);
   console.log(listing);
   useEffect(() => {
     const fetchListing = async () => {
@@ -131,6 +134,29 @@ const ShowListing = () => {
             <span>{listing.furnished ? "Furnished" : "Not Furnished"}</span>
           </div>
         </div>
+
+        {currentUser._id !== listing.userRef && !contactForm && (
+          <button
+            className="bg-slate-600 w-full rounded-md py-2 text-white"
+            onClick={() => setContactForm(true)}
+          >
+            Contact Owner
+          </button>
+        )}
+        {contactForm && (
+          <div>
+            <textarea
+              type="text"
+              name=""
+              id="message"
+              placeholder="Enter your message here..."
+              className="w-full py-2 px-2 my-6 rounded-sm"
+            />
+            <button className="bg-slate-600 w-full rounded-md py-2 text-white">
+              Send Message
+            </button>
+          </div>
+        )}
       </main>
     </>
   );
