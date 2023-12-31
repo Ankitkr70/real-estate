@@ -5,3 +5,7 @@
 .slick-slider .slick-dots {
   bottom: 15px;
 }
+
+input {
+  outline: none;
+}
