@@ -14,6 +14,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import Lisinting from "./pages/Lisinting";
 import ShowListing from "./pages/ShowListing";
 import EditListing from "./pages/EditListing";
+import Search from "./pages/Search";
 function App() {
   return (
     <Provider store={store}>
@@ -25,6 +26,8 @@ function App() {
             <Route path="/about" element={<About />}></Route>
             <Route path="/sign-in" element={<SignIn />}></Route>
             <Route path="/sign-up" element={<SignUp />}></Route>
+            <Route path="/search" element={<Search />}></Route>
+
             <Route element={<PrivateRoute />}>
               <Route path="/profile" element={<Profile />}></Route>
               <Route path="/create-listing" element={<Lisinting />}></Route>

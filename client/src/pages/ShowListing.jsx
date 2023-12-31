@@ -18,7 +18,6 @@ const ShowListing = () => {
   const [linkCopy, setLinkCopy] = useState(false);
   const [contactForm, setContactForm] = useState(false);
   const currentUser = useSelector((store) => store.user.currentUser);
-  console.log(listing);
   useEffect(() => {
     const fetchListing = async () => {
       try {
